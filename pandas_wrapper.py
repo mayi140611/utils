@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# encoding: utf-8
 import pandas as pd
 
 class pandas_wrapper(object):

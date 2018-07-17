@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# encoding: utf-8
 from pyquery import PyQuery as pq
 
 class pyquery_wrapper(object):

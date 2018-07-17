@@ -1,10 +1,10 @@
 #!/usr/bin/python
 # encoding: utf-8
-'''
-收集一些日常工作中编写过的实用函数
+# '''
+# 收集一些日常工作中编写过的实用函数
 
-* 
-'''
+# * 
+# '''
 from functools import reduce
 class udf(object):
     def __init__(self):

@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# encoding: utf-8
 from pymongo import MongoClient
 
 class pymongo_wrapper(object):

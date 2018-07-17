@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# encoding: utf-8
 import requests
 
 class requests_wrapper(object):
@@ -5,8 +7,8 @@ class requests_wrapper(object):
     def __init__(self, url):
         self._url = url
 
-    def get_response(self, encoding='utf8', data=None):
-        r = requests.get(self._url,headers=self.headers)
+    def get_response(self, encoding='utf8', data=None, allow_redirects=False, proxies=None):
+        r = requests.get(self._url,headers=self.headers,allow_redirects=allow_redirects,proxies=proxies)
         r.encoding=encoding
         return r
     
