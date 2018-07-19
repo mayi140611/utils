@@ -26,15 +26,34 @@ class nltk_wrapper(object):
         返回某个word在text中出现的次数
         '''
         return self._text.count(word)
-    def words_freq(self):
+    def words_freq(self, n):
         '''
         返回text的词频字典
-        等价于nltk.book.FreqDist(self._text)
+        List the n most common elements and their counts from the most
+        common to the least.  If n is None, then list all element counts.
+        等价于nltk.book.FreqDist(self._text).most_common()
         '''        
-        return self._text.vocab()
-
+        return self._text.vocab().most_common(n)
+    
+    def lexical_diversity(self): 
+        '''
+        返回重复词密度：平均每个词重复几次
+        '''        
+        return len(self._text) / len(set(self._text)) 
+    
+    def percentage(self, word): 
+        '''
+        返回关键词密度：平均每个词重复几次
+        '''        
+        return self.countword(word)/self.length
+    
 #文本处理
     def get_bigrams(self):
         return bigrams(self._text)
     def get_trigrams(self):
         return trigrams(self._text)
+    def get_words(self, length):
+        '''
+        返回text中所有length长度的word
+        '''        
+        return [word for word in self._text if len(word)==length]
