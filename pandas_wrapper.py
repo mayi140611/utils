@@ -15,3 +15,19 @@ class pandas_wrapper(object):
             'Ohio': {2000: 1.5, 2001: 1.7, 2002: 3.6}}
         '''
         return pd.DataFrame(data)
+
+# 索引数据
+    def loc(self,df,indexes, variables):
+        '''
+        通过索引和列名获取数据
+        indexes: 索引列表
+        variables：变量名列表
+        '''
+        return df.loc[indexes,variables]
+    def iloc(self,df,rows, columns):
+        '''
+        通过索引和列名获取数据
+        rows: 行号列表
+        columns：列号列表
+        '''
+        return df.iloc[indexes,columns]
