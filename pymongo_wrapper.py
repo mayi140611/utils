@@ -34,5 +34,6 @@ class pymongo_wrapper(object):
                 d['_id'] = 0
             for i in fieldlist:
                 d[i] = 1
-        return collection.find(conditions, d)
+            return collection.find(conditions, d)
+        return collection.find(conditions)
 
