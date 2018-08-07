@@ -5,7 +5,7 @@ from pymongo import MongoClient
 class pymongo_wrapper(object):
     def __init__(self):
         self._client = MongoClient()
-
+    
     def get_db(self, dbname):
         return self._client[dbname]
 
@@ -37,3 +37,31 @@ class pymongo_wrapper(object):
             return collection.find(conditions, d)
         return collection.find(conditions)
 
+
+    def update_doc(self, collection, conditions,fielddict):
+        '''
+        更新表中的符合条件的第一条记录。注意：如果field存在，则更新值，如果不存在，则新增；但是不能删除field
+        :conditions:如{'c1':'v1','c2':'v2'}
+        :fielddict: 如{'f1':'v1','f2':'v2'}
+        '''
+        return collection.update_one(conditions,{ "$set": fielddict})
+    def update_docs(self, collection, conditions,fielddict):
+        '''
+        更新表中符合条件的所有记录。注意：如果field存在，则更新值，如果不存在，则新增；但是不能删除field
+        :conditions:如{'c1':'v1','c2':'v2'}
+        :fielddict: 如{'f1':'v1','f2':'v2'}
+        '''
+        return collection.update_many(conditions,{ "$set": fielddict})
+    
+    def remove_doc_fields(self, collection, conditions,fieldslist):
+        '''
+        更新表中符合条件的一条记录。注意：如果field存在，则更新值，如果不存在，则新增；但是不能删除field
+        :fieldslist: 如['f1','f2'...]
+        '''
+        return collection.update_one(conditions,{ "$unset": {ii:"" for ii in fieldslist}})
+    def remove_docs_fields(self, collection, conditions,fieldslist):
+        '''
+        更新表中符合条件的所有记录。注意：如果field存在，则更新值，如果不存在，则新增；但是不能删除field
+        :fieldslist: 如['f1','f2'...]
+        '''
+            return collection.update_many(conditions,{ "$unset": {ii:"" for ii in fieldslist}})
