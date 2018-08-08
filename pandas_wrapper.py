@@ -6,6 +6,19 @@ class pandas_wrapper(object):
     def __init__(self):
         pass
     @classmethod
+    def build_series_from_list(self,data=None, index=None, dtype=None, name=None, copy=False, fastpath=False):
+        '''
+        Series:One-dimensional ndarray with axis labels (including time series).
+        '''
+        return pd.Series(data, index, dtype, name, copy, fastpath)
+
+    @classmethod
+    def build_series_from_dict(self,data=None, index=None, dtype=None, name=None, copy=False, fastpath=False):
+        '''
+        Series:One-dimensional ndarray with axis labels (including time series).
+        '''
+        return pd.Series(data, index, dtype, name, copy, fastpath)
+    @classmethod
     def build_df_with_dict(self, data=None, index=None, columns=None, dtype=None, copy=False):
         '''
         data = {'state': ['Ohio', 'Ohio', 'Ohio', 'Nevada', 'Nevada'],
