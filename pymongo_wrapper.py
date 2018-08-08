@@ -26,6 +26,7 @@ class pymongo_wrapper(object):
         '''
         查找所有数据，返回指定的fieldlist
         :conditions 查询条件。{'c1':'全身'}
+            注：把不存在某个属性的行都查出来的条件{'c2':{'$exists':False}}
         :fieldlist 'all'表示返回所有数据，或者是一个字段list
         '''
         d = dict()
@@ -64,4 +65,4 @@ class pymongo_wrapper(object):
         更新表中符合条件的所有记录。注意：如果field存在，则更新值，如果不存在，则新增；但是不能删除field
         :fieldslist: 如['f1','f2'...]
         '''
-            return collection.update_many(conditions,{ "$unset": {ii:"" for ii in fieldslist}})
+        return collection.update_many(conditions,{ "$unset": {ii:"" for ii in fieldslist}})

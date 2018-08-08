@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# encoding: utf-8
 '''
 主要有如下任务：
 * word2vec
