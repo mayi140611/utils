@@ -1,5 +1,9 @@
 #!/usr/bin/python
 # encoding: utf-8
+# version: pymongo==3.7.1
+
+#待处理：
+#db.getCollection('symptomsdetail').find({}).sort({'titlepy':1})
 from pymongo import MongoClient
 
 class pymongo_wrapper(object):
