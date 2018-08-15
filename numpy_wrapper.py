@@ -11,6 +11,7 @@ class numpy_wrapper(object):
     def build_array_from_seq(self, start, stop, step=1, shape=None, dtype=None):
         '''
         由序列生成数组
+        @shape: list or tuple
         '''
         return np.arange(start, stop, step, dtype).reshape(shape)
     @classmethod
@@ -19,6 +20,60 @@ class numpy_wrapper(object):
     @classmethod
     def build_zeros_array(self,shape, dtype=float, order='C'):
         return np.zeros(shape,dtype,order)
+    
+    @classmethod
+    def add_newaxis_last(self,matr):
+        '''
+        在matr的最后加一个维度
+        @matr: 1D ndarray
+        '''
+        return matr[:,np.newaxis]
+    @classmethod
+    def flatten(self,order='C'):
+        '''
+        Return a copy of the array collapsed(坍塌) into one dimension.
+        @order: {'C', 'F', 'A', 'K'}, optional
+        'C' means to flatten in row-major (C-style) order.
+        'F' means to flatten in column-major (Fortran-
+        style) order. 'A' means to flatten in column-major
+        order if `a` is Fortran *contiguous* in memory,
+        row-major order otherwise. 'K' means to flatten
+        `a` in the order the elements occur in memory.
+        The default is 'C'.
+        '''
+        return np.flatten(order)
+    # ---------------------------------------------------------------------------------
+    # 描述性统计
+    # ---------------------------------------------------------------------------------
+    
+    @classmethod
+    def max(self, a, axis=None):
+        '''
+        求最大值
+        @axis: None表示求整个数组的最大值；0表示求每列最大值；1表示求每行最大值
+        '''
+        return np.max(a, axis)
+    @classmethod
+    def min(self, a, axis=None):
+        '''
+        求最大值
+        @axis: None表示求整个数组的最大值；0表示求每列最大值；1表示求每行最大值
+        '''
+        return np.min(a, axis)
+    @classmethod
+    def sum(self, a, axis=None):
+        '''
+        求最大值
+        @axis: None表示求整个数组的最大值；0表示求每列最大值；1表示求每行最大值
+        '''
+        return np.sum(a, axis)
+    @classmethod
+    def mean(self, a, axis=None):
+        '''
+        求最大值
+        @axis: None表示求整个数组的最大值；0表示求每列最大值；1表示求每行最大值
+        '''
+        return np.mean(a, axis)
     # ---------------------------------------------------------------------------------
     # 生成随机数
     # ---------------------------------------------------------------------------------

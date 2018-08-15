@@ -34,6 +34,16 @@ class keras_wrapper(object):
             可选项：'relu','tanh','softmax'
         '''
         return model.add(Dense(units=units,activation, use_bias, kernel_initializer, bias_initializer, kernel_regularizer, bias_regularizer, activity_regularizer, kernel_constraint, bias_constraint, input_dim))
+    @classmethod
+    def add_masking_layer(self,model,mask_value=0.0):
+        '''
+        使用给定的值对输入的序列信号进行“屏蔽”，用以定位需要跳过的时间步
+        考虑输入数据x是一个形如(samples,timesteps,features)的张量，现将其送入LSTM层。因为你缺少时间步为3和5的信号，所以你希望将其掩盖。这时候应该：
+
+        赋值x[:,3,:] = 0.，x[:,5,:] = 0.
+        在LSTM层之前插入mask_value=0.的Masking层
+        '''
+        return model.add(Dense(units=units,activation, use_bias, kernel_initializer, bias_initializer, kernel_regularizer, bias_regularizer, activity_regularizer, kernel_constraint, bias_constraint, input_dim))
     '''
     建立Functional模型
     '''
