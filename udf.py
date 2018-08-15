@@ -6,6 +6,7 @@
 # * 
 # '''
 from functools import reduce
+from math import sqrt
 class udf(object):
     def __init__(self):
         pass
@@ -64,3 +65,15 @@ class udf(object):
         计算1！+2！+...+num! 的结果。
         '''
         return sum([self.cal_factorial(i) for i in range(1, num+1)])
+    def cal_cos_similarity(a1,a2):
+        '''
+        计算向量的余弦相似度
+        @a1,a2: 1D ndarray,
+        如：array([0., 0., 0., ..., 0., 0., 0.])
+        '''
+        a = a1.dot(a2)
+        b = a1.dot(a1)
+        c = a2.dot(a2)
+        if b == 0 or c==0:
+            return 0
+        return a/sqrt( b*c )
