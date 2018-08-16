@@ -42,6 +42,21 @@ class pymongo_wrapper(object):
             return collection.find(conditions, d)
         return collection.find(conditions)
 
+    def find_one(self, collection, conditions=None, fieldlist='all'):
+        '''
+        查找所有数据，返回指定的fieldlist
+        :conditions 查询条件。{'c1':'全身'}
+            注：把不存在某个属性的行都查出来的条件{'c2':{'$exists':False}}
+        :fieldlist 'all'表示返回所有数据，或者是一个字段list
+        '''
+        d = dict()
+        if fieldlist != 'all':
+            if '_id' not in fieldlist:
+                d['_id'] = 0
+            for i in fieldlist:
+                d[i] = 1
+            return collection.find_one(conditions, d)
+        return collection.find_one(conditions)
 
     def update_doc(self, collection, conditions,fielddict):
         '''
