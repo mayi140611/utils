@@ -8,6 +8,20 @@ class numpy_wrapper(object):
     def __init__(self):
         pass
     @classmethod
+    def arange(self, start, stop, step=1, dtype=None):
+        '''
+        生成1D ndarray
+        Return evenly spaced values within a given interval.
+        '''
+        return np.arange(start, stop, step, dtype)
+    @classmethod
+    def linspace(self, start, stop, num=50, endpoint=True, retstep=False, dtype=None):
+        '''
+        生成1D ndarray
+        Return evenly spaced numbers over a specified interval.
+        '''
+        return np.linspace(start, stop, num, endpoint, retstep, dtype)
+    @classmethod
     def build_array_from_seq(self, start, stop, step=1, shape=None, dtype=None):
         '''
         由序列生成数组

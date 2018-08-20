@@ -35,4 +35,15 @@ class matplotlib_wrapper(object):
     def __init__(self):
         pass
 
-    
+    @classmethod
+    def plot(selt, x, y, fmt=None, ls=None, lw=None):
+        '''
+        线图
+        @x, y : array-like or scalar
+        @fmt : str, optional
+            A format string, e.g. 'ro' for red circles. 
+            'r-'：red 实线
+        @linestyle or ls: ['solid' | 'dashed', 'dashdot', 'dotted' | (offset, on-off-dash-seq) | ``'-'`` | ``'--'`` | ``'-.'`` | ``':'`` | ``'None'`` | ``' '`` | ``''``]
+        @linewidth or lw: float value in points 
+        '''
+        return plt.plot(x, y, fmt, ls, lw)

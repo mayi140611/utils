@@ -29,7 +29,7 @@ class tf_wrapper(object):
         '''
         return tf.constant(value, dtype, shape, name, verify_shape)
     @classmethod
-    def Variable(self, initial_value=None, trainable=True, collections=None, validate_shape=True, caching_device=None, name=None, variable_def=None, dtype=None, expected_shape=None, import_scope=None, constraint=None):
+    def Variable(self, initial_value, trainable=True, collections=None, validate_shape=True, caching_device=None, name=None, variable_def=None, dtype=None, expected_shape=None, import_scope=None, constraint=None):
         '''
         Create a variable.
         After construction, the type and shape of
@@ -39,9 +39,51 @@ class tf_wrapper(object):
         `assign` Op with `validate_shape=False`.
         '''
         return tf.Variable(initial_value, trainable, collections, validate_shape, caching_device, name, variable_def, dtype, expected_shape, import_scope, constraint)
+    @classmethod
+    def placeholder(self, dtype, shape=None, name=None):
+        '''
+        占位符
+        Inserts a placeholder for a tensor that will be always fed.
+        @shape: 占位符的形状。
+        [None, 1]：表示行数不确定，1列
+        **Important**: This tensor will produce an error if evaluated. Its value must
+        be fed using the `feed_dict` optional argument to `Session.run()`,
+        `Tensor.eval()`, or `Operation.run()`.
+        ```python
+        x = tf.placeholder(tf.float32, shape=(1024, 1024))
+        y = tf.matmul(x, x)
+
+        with tf.Session() as sess:
+          print(sess.run(y))  # ERROR: will fail because x was not fed.
+
+          rand_array = np.random.rand(1024, 1024)
+          print(sess.run(y, feed_dict={x: rand_array}))  # Will succeed.
+        ```
+        '''
+        return tf.placeholder(dtype, shape=None, name=None)
+    '''
+    #####################################
+    生成Tensor
+    #####################################
+    '''
+    @classmethod
+    def zeros(self, shape, dtype=tf.float32, name=None):
+        '''
+        Creates a tensor with all elements set to zero.
+
+        '''
+        return tf.zeros(shape, dtype, name)
+    @classmethod
+    def random_normal(self, shape, mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None):
+        '''
+        Outputs random values from a normal distribution.
+        '''
+        return tf.random_normal(shape, mean, stddev, dtype, seed, name)
+    
     '''
     #####################################
     op操作
+    注意：tf中定义的操作都是lazy_load，在session中才会进行实际的计算
     #####################################
     '''
     @classmethod
@@ -54,6 +96,18 @@ class tf_wrapper(object):
           that need to use the reset value.
         '''
         return tf.assign(ref, value, validate_shape, use_locking, name)
+    @classmethod
+    def equal(self, x, y, name=None):
+        '''
+        Returns the truth value of (x == y) element-wise.
+        '''
+        return tf.equal(x, y, name)
+    @classmethod
+    def argmax(self, input, axis=None, name=None, dimension=None, output_type=tf.int64):
+        '''
+        Returns the index with the largest value across axes of a tensor. (deprecated arguments)
+        '''
+        return tf.argmax(input, axis, name, dimension, output_type)
     @classmethod
     def add(self, x, y, name=None):
         '''
@@ -91,6 +145,39 @@ class tf_wrapper(object):
         ```
         '''
         return tf.reduce_mean(input_tensor, axis=None, keepdims=None, name=None, reduction_indices=None, keep_dims=None)
+    @classmethod
+    def matmul(self, a, b, transpose_a=False, transpose_b=False, adjoint_a=False, adjoint_b=False, a_is_sparse=False, b_is_sparse=False, name=None):
+        '''
+        矩阵乘法
+        Multiplies matrix `a` by matrix `b`, producing `a` * `b`.
+        '''
+        return tf.matmul(a, b, transpose_a, transpose_b, adjoint_a, adjoint_b, a_is_sparse, b_is_sparse, name)
+    '''
+    #####################################
+    op操作: 激活函数
+    注意：tf中定义的操作都是lazy_load，在session中才会进行实际的计算
+    #####################################
+    '''
+    @classmethod
+    def tanh(self, x, name=None):
+        '''
+        Computes hyperbolic tangent（双曲正切函数） of `x` element-wise.
+        tanh(x)=sinh(x)/cosh(x) = (exp(x)-exp(-x))/(exp(x)+exp(-x))
+        '''
+        return tf.nn.tanh(x, name)
+    @classmethod
+    def softmax(self, logits, axis=None, name=None, dim=None):
+        '''
+        Computes softmax activations. (deprecated arguments)
+        softmax = tf.exp(logits) / tf.reduce_sum(tf.exp(logits), axis)
+        '''
+        return tf.nn.softmax(logits, axis=None, name=None, dim=None)
+    @classmethod
+    def relu(self, features, name=None):
+        '''
+        Computes rectified linear: `max(features, 0)`.
+        '''
+        return tf.nn.relu(features, name)
     
     '''
     #####################################
@@ -155,3 +242,18 @@ class tf_wrapper(object):
         of using this function.
         '''
         return optimizer.minimize(loss, global_step, var_list, gate_gradients, aggregation_method, colocate_gradients_with_ops, name, grad_loss)
+    '''
+    #####################################
+    layer
+    #####################################
+    '''
+    def Dense(self):
+        '''
+        全连接层
+        这里只是一个例子
+        '''
+        Weights_L1 = tf.Variable(tf.random_normal([1,10]))#[1,10] = [输入神经元个数, 输出神经元个数]
+        # Weights_L1 = tf.Variable(np.random.normal(size=[1,10]))#报错，类型不匹配
+        biases_L1 = tf.Variable(tf.zeros([1,10]))
+        Wx_plus_b_L1 = tf.matmul(x,Weights_L1) + biases_L1
+        L1 = tf.nn.tanh(Wx_plus_b_L1)        
