@@ -6,6 +6,14 @@ class series_wrapper(object):
     def __init__(self):
         pass
     @classmethod
+    def items(self,series):
+        '''
+        Iterator over (column name, Series) pairs.
+        for i,v in series1.items():
+            ……
+        '''
+        return series.items()
+    @classmethod
     def append(self,to_append, ignore_index=False, verify_integrity=False):
         '''
         Concatenate two or more Series.

@@ -29,8 +29,10 @@ class pymongo_wrapper(object):
     def find_all(self, collection, conditions=None, fieldlist='all'):
         '''
         查找所有数据，返回指定的fieldlist
-        :conditions 查询条件。{'c1':'全身'}
-            注：把不存在某个属性的行都查出来的条件{'c2':{'$exists':False}}
+        :conditions 查询条件。
+            {'c1':'全身'}
+            {'c2':{'$exists':False}}：把不存在某个属性的行都查出来的条件
+            {'$and/or': [ { <expression1> }, { <expression2> } , ... , { <expressionN> } ] }
         :fieldlist 'all'表示返回所有数据，或者是一个字段list
         '''
         d = dict()
