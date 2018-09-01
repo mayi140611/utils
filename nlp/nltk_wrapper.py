@@ -30,7 +30,11 @@ class nltk_wrapper(object):
         text: 一个nltk.text.Text类型的语料
         '''
         self._text = text
-
+    def english_stopwords(self):
+        '''
+        @return: english停用词list
+        '''
+        return nltk.corpus.stopwords.words('english')
     #文本探索
     #输入一个nltk.text.Text类型的语料，进行一些统计分析
     def length(self):

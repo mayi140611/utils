@@ -181,6 +181,44 @@ class tf_wrapper(object):
     
     '''
     #####################################
+    op操作: 损失函数loss function
+    常用的损失函数有：
+    * 二次代价函数，均方误差
+    适用于激活函数是线性（如Relu）的
+    loss = tf.reduce_mean(tf.square(y-prediction))
+    * 交叉熵损失函数
+    如果输出层使用了Sigmoid函数后直接输出（没有使用softmax）
+    loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(labels=y,logits=prediction))
+    #如果输出层采用了softmax
+    loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(labels=y,logits=prediction))
+    #####################################
+    '''
+    @classmethod
+    def mse(self, y, prediction):
+        '''
+        Mean Square Error
+        @y: 真实值
+        @prediction: 预测值
+        '''
+        return tf.reduce_mean(tf.square(y-prediction))
+    @classmethod
+    def sigmoid_cross_entropy_with_logits(self, y, prediction):
+        '''
+        交叉熵损失函数，如果输出层使用了Sigmoid函数后直接输出（没有使用softmax）
+        @y: 真实值
+        @prediction: 预测值
+        '''
+        return tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(labels=y,logits=prediction))
+    @classmethod
+    def softmax_cross_entropy_with_logits_v2(self, y, prediction):
+        '''
+        交叉熵损失函数，如果输出层采用了softmax
+        @y: 真实值
+        @prediction: 预测值
+        '''
+        return tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(labels=y,logits=prediction))
+    '''
+    #####################################
     session操作
     #####################################
     '''
@@ -232,6 +270,20 @@ class tf_wrapper(object):
         '''
         return tf.train.GradientDescentOptimizer(learning_rate, use_locking, name)
     @classmethod
+    def RMSPropOptimizer(self, learning_rate=0.001, decay=0.9, momentum=0.0, epsilon=1e-10, use_locking=False, centered=False, name='RMSProp'):
+        '''
+        Optimizer that implements the RMSProp algorithm.
+        注意学习率太大会严重影响准确率，一般去0.001
+        '''
+        return tf.train.RMSPropOptimizer(learning_rate, decay, momentum, epsilon, use_locking, centered, name)
+    @classmethod
+    def AdamOptimizer(self, learning_rate=0.001, beta1=0.9, beta2=0.999, epsilon=1e-08, use_locking=False, name='Adam'):
+        '''
+        Optimizer that implements the Adam algorithm.
+        注意学习率太大会严重影响准确率，一般去0.001
+        '''
+        return tf.train.AdamOptimizer(learning_rate, beta1, beta2, epsilon, use_locking, name)
+    @classmethod
     def minimize(self, optimizer, loss, global_step=None, var_list=None, gate_gradients=1, aggregation_method=None, colocate_gradients_with_ops=False, name=None, grad_loss=None):
         '''
         Add operations to minimize `loss` by updating `var_list`.
@@ -257,3 +309,15 @@ class tf_wrapper(object):
         biases_L1 = tf.Variable(tf.zeros([1,10]))
         Wx_plus_b_L1 = tf.matmul(x,Weights_L1) + biases_L1
         L1 = tf.nn.tanh(Wx_plus_b_L1)        
+    def dropout(self, x, keep_prob, noise_shape=None, seed=None, name=None):
+        '''
+        Computes dropout.
+        dropout。本质也是减小模型的拟合能力（复杂程度）。
+        在训练时人为的随机的关闭一些神经元不参与训练；
+        注意：测试和真正的使用时则是打开所有的神经元的。
+        一般应用在Dence层后，如
+        L1 = tf.nn.tanh(tf.matmul(x,W1)+b1)
+        L1_drop = tf.nn.dropout(L1,keep_prob) 
+        '''
+        return tf.nn.dropout(x, keep_prob, noise_shape, seed, name)
+    
