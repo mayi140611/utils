@@ -16,8 +16,8 @@ class pyspark_wrapper(object):
             一个spark应用的层次：application含多个job，job含多个stage，stage含多个task
         '''
         spark = SparkSession.builder \
-             .master("local") \
-             .appName("Word Count") \
+             .master(master) \
+             .appName(appname) \
              .getOrCreate()
         return spark
     @classmethod
@@ -36,6 +36,7 @@ class pyspark_wrapper(object):
     * spark.createDataFrame(data, schema=None, samplingRatio=None, verifySchema=True)
     ###########################################
     '''
+    @classmethod
     def csv(self, spark, path, schema=None, sep=None, encoding=None, quote=None, escape=None, comment=None, header=None, inferSchema=None, ignoreLeadingWhiteSpace=None, ignoreTrailingWhiteSpace=None, nullValue=None, nanValue=None, positiveInf=None, negativeInf=None, dateFormat=None, timestampFormat=None, maxColumns=None, maxCharsPerColumn=None, maxMalformedLogPerPartition=None, mode=None, columnNameOfCorruptRecord=None, multiLine=None, charToEscapeQuoteEscaping=None):
         '''
         Loads a CSV file and returns the result as a  :class:`DataFrame`.
@@ -43,17 +44,29 @@ class pyspark_wrapper(object):
         df = spark.read.csv("file:///home/ian/code/data/sparkml/wordcount", sep='|', header=False)
         '''
         return spark.read.csv(path, schema, sep, encoding=None, quote=None, escape=None, comment=None, header=None, inferSchema=None, ignoreLeadingWhiteSpace=None, ignoreTrailingWhiteSpace=None, nullValue=None, nanValue=None, positiveInf=None, negativeInf=None, dateFormat=None, timestampFormat=None, maxColumns=None, maxCharsPerColumn=None, maxMalformedLogPerPartition=None, mode=None, columnNameOfCorruptRecord=None, multiLine=None, charToEscapeQuoteEscaping=None)
+    @classmethod
     def createDataFrame(self, spark, data, schema=None, samplingRatio=None, verifySchema=True):
         '''
         Creates a :class:`DataFrame` from an :class:`RDD`, a list or a :class:`pandas.DataFrame`.
+        
+        >>>df2 = spark.createDataFrame([[1, 2, 3],[4, 5, 6]], ["col1", "col2", "col0"])
+        >>>df2.show()
+        +----+----+----+
+        |col1|col2|col0|
+        +----+----+----+
+        |   1|   2|   3|
+        |   4|   5|   6|
+        +----+----+----+
         '''
         return spark.createDataFrame(data, schema, samplingRatio=None, verifySchema=True)
     
-    def show(n=20, truncate=True, vertical=False):
+    @classmethod
+    def show(self, n=20, truncate=True, vertical=False):
         '''
         Prints the first ``n`` rows to the console.
         '''        
-        return df.show(n=20, truncate=True, vertical=False)
+        return df.show(n, truncate, vertical)
+    @classmethod
     def first(self,df):
         '''
         Returns the first row as a :class:`Row`.
@@ -62,6 +75,7 @@ class pyspark_wrapper(object):
         Row(age=2, name='Alice')
         '''        
         return df.first()
+    @classmethod
     def withColumnRenamed(self,df, existing, new):
         '''
         修改df的列名，注意这会复制出一个新的df，而不是在原df上做修改
@@ -69,13 +83,26 @@ class pyspark_wrapper(object):
         This is a no-op if schema doesn't contain the given column name.
         '''        
         return df.withColumnRenamed(existing, new)
+    @classmethod
     def sort(self,df,*cols, **kwargs):
         '''
         Returns a new :class:`DataFrame` sorted by the specified column(s).
-        df3.sort(df3['_2'].desc())
+        >>>df3.sort(df3['_2'].desc())
         '''        
         return df.sort(*cols, **kwargs)
-    
+    '''
+    ###########################################
+    基于DataFrame的sparkml 操作
+    ###########################################
+    '''
+    @classmethod
+    def csv(self, spark, path, schema=None, sep=None, encoding=None, quote=None, escape=None, comment=None, header=None, inferSchema=None, ignoreLeadingWhiteSpace=None, ignoreTrailingWhiteSpace=None, nullValue=None, nanValue=None, positiveInf=None, negativeInf=None, dateFormat=None, timestampFormat=None, maxColumns=None, maxCharsPerColumn=None, maxMalformedLogPerPartition=None, mode=None, columnNameOfCorruptRecord=None, multiLine=None, charToEscapeQuoteEscaping=None):
+        '''
+        Loads a CSV file and returns the result as a  :class:`DataFrame`.
+        @spark: pyspark.sql.session.SparkSession的实例
+        df = spark.read.csv("file:///home/ian/code/data/sparkml/wordcount", sep='|', header=False)
+        '''
+        return 
     '''
     ###########################################
     RDD 操作

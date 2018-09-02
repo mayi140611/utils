@@ -30,6 +30,15 @@ class pandas_wrapper(object):
         '''
         return pd.DataFrame(data)
     @classmethod
+    def build_df_from_list(self, data=None, index=None, columns=None, dtype=None, copy=False):
+        '''
+        >>>pandas.DataFrame([[1, 2],[3,4]])
+        	0	1
+        0	1	2
+        1	3	4
+        '''
+        return pd.DataFrame(data)
+    @classmethod
     def series_inverse(self, series):
         '''
         把series的index和values互换
