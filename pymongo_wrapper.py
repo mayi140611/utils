@@ -8,7 +8,7 @@ from pymongo import MongoClient
 
 class pymongo_wrapper(object):
     def __init__(self):
-        self._client = MongoClient()
+        self._client = MongoClient()#MongoClient('localhost', 27017) or MongoClient('mongodb://localhost:27017/')
     
     def get_db(self, dbname):
         return self._client[dbname]
